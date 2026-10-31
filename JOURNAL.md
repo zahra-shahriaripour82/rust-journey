@@ -25,3 +25,12 @@
   Warnings can show real bugs ("never read" = I counted but never printed).
 - Confused by: why `&counter += 1` failed (& makes a reference, not the number).
 - Question: why does Rust need references at all? Why not just give the variable?
+
+
+## Week 1 Day 5: Functions, control flow, tuples, arrays
+- Learned: a function returns its last expression (no `;`). Adding `;` throws the
+  value away and returns `()`. Function signatures always need types (a contract).
+  A function can return several values as a tuple: (min, max, avg, sum).
+  Started Rustlings: shadowing (`let` again) can change a variable's type; `mut` can't.
+- Confused by: statements vs expressions at first; how to start Rustlings.
+- Question: how do I return a list whose length isn't fixed (not always 10)?

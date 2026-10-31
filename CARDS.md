@@ -49,3 +49,22 @@ The stack is cleaned up automatically
 
 - Q: Why `.trim()` before `.parse()`?
   A: read_line keeps the Enter key ("50\n"), and "50\n" is not a valid number.
+
+
+
+
+  ## Week 1 Day 5
+- Q: Expression vs statement? What does `;` do?
+  A: Expression = gives a value (a + b). Statement = does something, no value (let x = 5;).
+     `;` throws the value away. No `;` on the last line = the return value.
+
+- Q: Why must function signatures have types, when `let` doesn't need them?
+  A: The signature is a contract: you can understand and check a function by
+     reading one line, without reading its body or its callers.
+
+- Q: Why is `135 / 10` equal to 13, and how do I get 13.5?
+  A: i32 / i32 = integer division (drops decimals). Use `sum as f64 / 10.0`.
+
+- Q: Tuple vs array?
+  A: Tuple = different types, fixed size, t.0 / t.1. Array = same type,
+     fixed size [i32; 10], a[0]. Both live on the stack.

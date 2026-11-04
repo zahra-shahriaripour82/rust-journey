@@ -68,3 +68,85 @@ The stack is cleaned up automatically
 - Q: Tuple vs array?
   A: Tuple = different types, fixed size, t.0 / t.1. Array = same type,
      fixed size [i32; 10], a[0]. Both live on the stack.
+
+- Q : What does rustc produce, and why can it run on a computer without Rust installed?
+  A:it was compiled ahead of time (nothing is left to translate),
+the standard library parts you use are copied into the file,
+there’s no runtime or garbage collector needed.
+
+
+
+
+## Week 1 Day 6: quiz review (🟡 and ❌)
+
+- Q: Why can a Rust binary run without Rust installed? (3 reasons)
+  A: 1) Compiled ahead of time to machine code. 2) The std library parts are copied
+     into the file. 3) No runtime or garbage collector needed.
+
+- Q: cargo build vs cargo build --release?
+  A: build = DEBUG program: compiles fast, runs slow, for development.
+     --release = OPTIMIZED program: compiles slow, runs fast, for production.
+
+- Q: Why is release so much faster?
+  A: The optimizer rewrites the code (registers, loop unrolling, SIMD)
+     and release removes the overflow checks on every +.
+
+- Q: 250u8.saturating_add(10)?
+  A: 255. Saturating = stops at the limit (a full glass of water).
+
+- Q: Integer overflow in debug vs release?
+  A: Debug = panic (crash with an error). Release = silent wrap-around (wrong number).
+     Debug checks every + to find bugs; release skips the checks for speed.
+
+- Q: 300 as u8? Why?
+  A: 44. `as` keeps only the lowest 8 bits = 300 - 256. No error, no warning!
+
+- Q: The 4 memory regions? Where do a local i32 and Box::new(5) live?
+  A: Code, Static, Stack, Heap. Local i32 → stack. The 5 in a Box → heap
+     (the Box pointer itself → stack).
+
+- Q: mut vs shadowing: the difference?
+  A: mut = same variable, type can't change.
+     Shadowing (let again) = new variable, same name, type CAN change.
+
+- Q: rand = "0.8.5": which versions can Cargo use?
+  A: >= 0.8.5 and < 0.9.0. "Same middle number = safe." Before 1.0, the middle
+     number means breaking changes (rand 0.10 broke the Book's code).
+
+- Q: Why are indexes usize, not i32?
+  A: usize = the size of a memory address, so it can index any position.
+     And an index can never be negative.
+
+- Q: arr[10] on a 5-element array: Rust vs C?
+  A: Rust checks and panics ("index out of bounds"). C silently reads other
+     memory → buffer overflow, a big security hole.
+
+
+
+     ## Week 2 Day 1
+- Q: What is a stack frame? When is it created and removed?
+  A: A block of stack memory for one function call's local variables.
+     Created when the function is called, removed when it returns.
+
+- Q: Stack vs heap: speed, size, and how long data lives?
+  A: Stack = very fast, small (~8 MB), data dies when the function returns.
+     Heap = slower, huge, data lives until someone frees it.
+
+- Q: 3 reasons data goes on the heap?
+  A: 1) Size unknown at compile time (user input, growing list).
+     2) Data must outlive the function. 3) Data is too big for the stack.
+
+- Q: The 5 classic memory bugs?
+  A: Leak (never freed), double free (freed twice), use after free (used after
+     freeing), dangling pointer (points to freed memory), buffer overflow
+     (reads/writes past the end). Hotel 🏨: no check-out, check out twice,
+     re-enter the room after checking out, key to a torn-down room, walking
+     into the wrong rooms.
+
+- Q: What does a garbage collector cost?
+  A: Pauses, extra memory, and no control over WHEN memory is freed.
+
+  - Q: Why does Rust refuse `fn dangle() -> &i32 { let x = 5; &x }`?
+  A: x lives in dangle's stack frame. When dangle returns, the frame is removed,
+     so &x would point to memory that doesn't exist (a dangling pointer).
+     Rust catches this at COMPILE time; C doesn't.

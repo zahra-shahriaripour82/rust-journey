@@ -32,6 +32,12 @@ fn main() {
 
 
 counter += 1;
+   
+        if counter == 7 {
+    println!("You lose! The number was {secret_number}");
+        }
+
+ let mut tries_left =7-counter;
 
 
 
@@ -43,6 +49,9 @@ counter += 1;
                 println!("you win in a  {counter}");
                 break;
             }
+            
         }
+println!("{tries_left}tries left") ;
+   }
     }
-}
+

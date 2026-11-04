@@ -5,22 +5,22 @@ fn main() {
 }
 
 fn stats(numbers: [i32; 10]) -> (i32, i32, f64, i64) {
-    let mut min = numbers[0]; // start with the first number
+    let mut min = numbers[0]; 
     let mut max = numbers[0];
     let mut sum = 0;
 
     for n in numbers {
-        // look at each number, one by one
+
         if n < min {
-            min = n; // found a smaller one → remember it
+            min = n; 
         }
         if n > max {
-            max = n; // found a bigger one → remember it
+            max = n;
         }
-        sum += n as i64; // add to the total
+        sum += n as i64; 
     }
 
-    let avg = sum as f64 / numbers.len() as f64; // decimal division
+    let avg = sum as f64 / numbers.len() as f64; 
 
-    (min, max, avg, sum) // no ; → returned as a tuple
+    (min, max, avg, sum) 
 }

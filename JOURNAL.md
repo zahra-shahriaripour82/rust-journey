@@ -34,3 +34,39 @@
   Started Rustlings: shadowing (`let` again) can change a variable's type; `mut` can't.
 - Confused by: statements vs expressions at first; how to start Rustlings.
 - Question: how do I return a list whose length isn't fixed (not always 10)?
+
+
+
+
+
+## Week 2 Day 1: Stack, heap, memory bugs
+
+### The 5 memory bugs (one sentence each)
+1. Memory leak: the program never frees memory, so memory use keeps growing.
+2. Double free: the program frees the same memory twice, which can corrupt
+   memory and crash the program.
+3. Use after free: the program frees memory but then still uses it.
+4. Dangling pointer: a pointer that points to memory that is already freed.
+5. Buffer overflow: the program reads or writes past the end of its memory.
+
+### How my previous language (JavaScript) prevents them
+1. Leak: the garbage collector frees memory that nobody uses.
+2. Double free: I never free memory myself, the garbage collector does it.
+3. Use after free: memory is only freed when nobody uses it anymore.
+4. Dangling pointer: same reason as 3.
+5. Buffer overflow: it checks every index (arr[10] gives `undefined`,
+   Rust stops the program with "index out of bounds").
+
+### What the garbage collector costs
+- Cost 1: pauses: the GC sometimes stops or slows the program.
+- Cost 2: extra memory: the GC needs spare room to work.
+- Cost 3: no control over WHEN memory is cleaned up.
+
+### Learned / Confused by / Question
+- Learned: every function call adds a stack frame, and the stack grows down
+  (addresses get smaller). The stack is small (~8 MB): too many calls or a
+  10 MB array = stack overflow. A Box value on the heap survives after
+  its function ends.
+- Confused by: recursion in Step 4 (a function calling itself).
+- Question: without a garbage collector, how does Rust know when to free
+  heap memory?

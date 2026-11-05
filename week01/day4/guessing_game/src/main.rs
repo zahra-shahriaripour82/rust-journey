@@ -6,7 +6,7 @@ fn main() {
     println!("Guess the numnber!");
 
     let secret_number = rand::thread_rng().gen_range(1..=100);
-    let mut counter = 0 ;
+    let mut counter = 0;
 
     println!("The secret number is :{secret_number}");
 
@@ -22,26 +22,26 @@ fn main() {
 
         let guess: u32 = match guess.trim().parse() {
             Ok(num) => num,
-            Err(_) =>{ println!("Please type a number");continue},
-            
+            Err(_) => {
+                println!("Please type a number");
+                continue;
+            }
         };
 
-       if !(1..=100).contains(&guess){
-        println!("Please type a number between 1 to 100") ;
-       } ;
+        if !(1..=100).contains(&guess) {
+            println!("Please type a number between 1 to 100");
+        };
 
+        counter += 1;
 
-counter += 1;
-   
         if counter == 7 {
-    println!("You lose! The number was {secret_number}");
+            println!("You lose! The number was {secret_number}");
         }
 
- let mut tries_left =7-counter;
+        let tries_left = 7 - counter;
 
-
-
-        match guess.cmp(&secret_number) {
+        match guess.3
+        cmp(&secret_number) {
             Ordering::Less => println!("Too small!"),
             Ordering::Greater => println!("Too big"),
             Ordering::Equal => {
@@ -49,9 +49,7 @@ counter += 1;
                 println!("you win in a  {counter}");
                 break;
             }
-            
         }
-println!("{tries_left}tries left") ;
-   }
+        println!("{tries_left}tries left");
     }
-
+}

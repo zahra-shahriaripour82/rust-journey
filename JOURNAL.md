@@ -70,3 +70,19 @@
 - Confused by: recursion in Step 4 (a function calling itself).
 - Question: without a garbage collector, how does Rust know when to free
   heap memory?
+
+
+
+
+  ## Week 2 Day 2: Tools (fmt, Clippy, rust-analyzer, dbg!, debugger)
+- Learned: `cargo clippy` suggests better Rust: no `return` at the end,
+  `sum += n` instead of `sum = sum + n`, `if ok` instead of `if ok == true`.
+  In `for n in numbers`, n is the VALUE, not the index, so `sum += n`, not `numbers[n]`.
+  The debugger: breakpoint (red dot), F5 = continue, Variables panel, Call Stack
+  panel shows the stack frames live (sum on top of main).
+  Bug found with the debugger: `while i < numbers.len() - 1` stops one step
+  too early, so i = 4 never appears and the last number (50) is never added.
+  Fix: `while i < numbers.len()`.
+- Confused by: VS Code setup: format on save, rust-analyzer needs the folder
+  with Cargo.toml, and F5 while launch.json is open just reopens launch.json.
+- Question: why is `for n in numbers` safer than an index loop?

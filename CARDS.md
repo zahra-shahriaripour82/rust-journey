@@ -150,3 +150,23 @@ there’s no runtime or garbage collector needed.
   A: x lives in dangle's stack frame. When dangle returns, the frame is removed,
      so &x would point to memory that doesn't exist (a dangling pointer).
      Rust catches this at COMPILE time; C doesn't.
+
+
+
+
+     ## Week 2 Day 2
+- Q: Compiler vs Clippy: what does each check?
+  A: Compiler = is the code CORRECT? Clippy = is it GOOD, idiomatic Rust?
+     Run `cargo clippy` before every commit.
+
+- Q: What does dbg!(x * 2) print and return?
+  A: Prints file:line, the code, and its value (to stderr).
+     Returns the value, so `let y = dbg!(x * 2);` still works.
+
+- Q: for i in 0..numbers.len() vs for n in numbers?
+  A: First: i = positions (0, 1, 2...), use numbers[i]. Second: n = the values
+     directly. The second can't go out of bounds or be off by one.
+
+- Q: Step Over vs Step Into vs Step Out?
+  A: Over (F10) = run this line. Into (F11) = go inside the called function.
+     Out (Shift+F11) = finish this function, back to the caller.

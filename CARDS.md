@@ -170,3 +170,25 @@ there’s no runtime or garbage collector needed.
 - Q: Step Over vs Step Into vs Step Out?
   A: Over (F10) = run this line. Into (F11) = go inside the called function.
      Out (Shift+F11) = finish this function, back to the caller.
+
+
+## Week 2 Day 3
+- Q: String vs &str (simple version)?
+  A: String = owned, growable text on the heap (my notebook 📓).
+     &str = a read-only view of text (a photo of a page 👀). "hello" in code is a &str.
+
+- Q: Why `match choice.as_str()` and not `match choice`?
+  A: match needs the same type on both sides. choice is a String, "1" is a &str.
+     .as_str() gives a &str view of the String.
+
+- Q: Why does read_line() return input.trim().to_string() and not just input.trim()?
+  A: trim() gives a view into `input`, a local variable that dies when the function
+     ends → it would dangle. to_string() makes an owned copy that can be returned.
+
+- Q: What are stdin, stdout, stderr?
+  A: The 3 channels every program gets: input (keyboard), output (println!),
+     errors (eprintln!, dbg!).
+
+- Q: Same variable name in two different functions: is it shadowing?
+  A: No. Each function has its own stack frame and its own variables.
+     Shadowing = a second `let` with the same name in the SAME function.

@@ -86,3 +86,17 @@
 - Confused by: VS Code setup: format on save, rust-analyzer needs the folder
   with Cargo.toml, and F5 while launch.json is open just reopens launch.json.
 - Question: why is `for n in numbers` safer than an index loop?
+
+
+## Week 2 Day 3: Unit converter
+- Learned: built a 6-option unit converter with a menu loop and small functions
+  (one job each). `stdin` = the keyboard input channel; read_line writes into a
+  String (including the Enter key "\n"), .trim() removes it and gives a &str view,
+  .to_string() makes an owned copy that can leave the function.
+  match needs the same type on both sides, so `match choice.as_str()`.
+  Variables in different functions are separate (different stack frames),
+  so it's not shadowing.
+  Found a copy-paste bug: miles → km printed "miles". The compiler can't catch
+  wrong text; only testing can.
+- Confused by: String vs &str, and when to use each.
+- Question: how do I test my conversion functions automatically?

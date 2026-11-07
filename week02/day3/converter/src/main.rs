@@ -1,6 +1,8 @@
 use std::io;
 
 /// Reads one line from the keyboard, without spaces or the Enter key at the ends.
+const MILES_PER_KM: f64 = 0.621371;
+const POUNDS_PER_KG: f64 = 2.20462;
 fn read_line() -> String {
     let mut input = String::new();
     io::stdin()
@@ -29,19 +31,19 @@ fn fahrenheit_to_celsius(f: f64) -> f64 {
 }
 
 fn km_to_miles(km: f64) -> f64 {
-    km * 0.621371
+    km * MILES_PER_KM
 }
 
 fn miles_to_km(miles: f64) -> f64 {
-    miles / 0.621371
+    miles / MILES_PER_KM
 }
 
 fn kg_to_pounds(kg: f64) -> f64 {
-    kg * 2.20462
+    kg * POUNDS_PER_KG
 }
 
 fn pounds_to_kg(lb: f64) -> f64 {
-    lb / 2.20462
+    lb / POUNDS_PER_KG
 }
 
 fn main() {
@@ -97,5 +99,59 @@ fn main() {
             }
             _ => println!("Unknown choice: '{choice}'"),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    fn approx_eq(a: f64, b: f64) -> bool {
+        (a - b).abs() < 1e-9
+    }
+
+    #[test]
+    fn boiling_point() {
+        assert_eq!(celsius_to_fahrenheit(100.0), 212.0);
+    }
+
+    #[test]
+    fn freezing_point() {
+        assert_eq!(celsius_to_fahrenheit(0.0), 32.0);
+    }
+
+    #[test]
+    fn minus_forty_is_the_same() {
+        assert_eq!(celsius_to_fahrenheit(-40.0), -40.0);
+    }
+
+    #[test]
+    fn boiling_point_revese() {
+        assert_eq!(fahrenheit_to_celsius(212.0), 100.0);
+    }
+
+    #[test]
+    fn float_fixed() {
+        assert!(approx_eq(0.1 + 0.2, 0.3));
+    }
+
+    #[test]
+    fn ten_km_from_miles() {
+        assert_eq!(miles_to_km(6.21371), 10.0);
+    }
+
+    #[test]
+    fn one_kg_in_pounds() {
+        assert_eq!(kg_to_pounds(1.0), 2.20462);
+    }
+
+    #[test]
+    fn pounds_back_to_one_kg() {
+        assert_eq!(pounds_to_kg(2.20462), 1.0);
+    }
+
+    #[test]
+    fn km_round_trip() {
+        let back = miles_to_km(km_to_miles(7.3));
+        assert!(approx_eq(back, 7.3));
     }
 }

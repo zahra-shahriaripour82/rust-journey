@@ -100,3 +100,17 @@
   wrong text; only testing can.
 - Confused by: String vs &str, and when to use each.
 - Question: how do I test my conversion functions automatically?
+
+
+
+
+## Week 2 Day 4: Tests for the unit converter
+- Learned: a test is a function marked #[test] inside `#[cfg(test)] mod tests`,
+  with `use super::*;` so it can see my functions. `cargo test` runs them all.
+  assert_eq!(a, b) checks a == b; on failure it shows "left" (what I got) and
+  "right" (what I expected). 0.1 + 0.2 is NOT 0.3 in binary, so for f64 I use
+  approx_eq (difference < 1e-9) with assert!.
+  Tests make clean-up safe: change code, run cargo test, all green = nothing broke.
+- Confused by: my tests had errors: a test with the same name as the function
+  (it called itself!), and `1` instead of `1.0` (integer vs f64).
+- Question: can tests also check what the menu prints, not just the functions?

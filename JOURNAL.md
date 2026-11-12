@@ -114,3 +114,20 @@
 - Confused by: my tests had errors: a test with the same name as the function
   (it called itself!), and `1` instead of `1.0` (integer vs f64).
 - Question: can tests also check what the menu prints, not just the functions?
+
+
+
+
+
+## Week 2 Day 5: Practice (Exercism + Rustlings)
+- Done: 2 Exercism exercises (Raindrops and ___). Rustlings: not finished,
+  quiz1 and primitive_types still to do.
+- Learned: a function with `-> String` must RETURN text; println! only prints.
+  `match` runs only ONE branch, so when several things can be true at the same
+  time (15 → "PlingPlang"), use separate `if`s. `match` compares patterns,
+  `if` checks conditions.
+  Build text step by step: String::new() + push_str(...), check with is_empty().
+  `break` only works inside a loop.
+  An if/else as the last expression is the return value: both branches must
+  have the same type (n.to_string() and result are both String).
+- Confused by: when to use match vs if.

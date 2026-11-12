@@ -192,3 +192,12 @@ there’s no runtime or garbage collector needed.
 - Q: Same variable name in two different functions: is it shadowing?
   A: No. Each function has its own stack frame and its own variables.
      Shadowing = a second `let` with the same name in the SAME function.
+
+
+- Q: match vs if: when to use each?
+  A: match = compare ONE value with patterns ("1", Ordering::Less...), runs ONE branch.
+     if = check true/false conditions; several separate ifs can ALL run.
+
+- Q: println! vs returning a String?
+  A: println! shows text on screen and gives back nothing.
+     A function `-> String` must return the text (last expression, no ;).

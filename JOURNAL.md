@@ -131,3 +131,31 @@
   An if/else as the last expression is the return value: both branches must
   have the same type (n.to_string() and result are both String).
 - Confused by: when to use match vs if.
+
+
+
+## Week 3 · Day 1: Ownership and moves
+
+**What I learned**
+- Variables live on the stack. `Box::new(5)` puts the 5 on the heap,
+  and the variable only holds a pointer to it.
+- `let b = a;` with a Box is a **move**: a gives ownership to b.
+  Only the pointer is copied, not the heap data. After that, a can't be used.
+- There are 3 ways to move a Box: `let b = a;`, passing it to a function,
+  and returning it from a function.
+- Simple values like `i32` are copied, not moved, so both variables still work.
+- A moved-from `mut` variable can get a new value: `a = Box::new(2);`
+- I can't free memory myself in Rust. The owner frees it automatically,
+  exactly once.
+
+**Why Rust does this**
+If a and b both owned the same Box, both would free it at the end.
+That's a double free (or a use after free). One owner means one free.
+
+**My predictions**
+- First try, Programs 1 to 5: I got all of them wrong, because I didn't know
+  that `let b = a;` moves ownership.
+- After learning the rule, I got 3/3 on the new programs (A, B, C).
+
+**Error to remember**
+E0382 "borrow of moved value": I used a variable after its value moved away.

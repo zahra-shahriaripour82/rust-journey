@@ -198,3 +198,29 @@
       Q: Why is let y = x; OK for an i32? A: i32 is a Copy type: it lives only on the stack, so Rust copies it.
       Q: Can I free memory myself in Rust? A: No. The owner frees it automatically when it goes out of scope, exactly once.
       Q: Error E0382? A: "use of moved value". You used a variable after its value moved away.
+
+## Week 3 · Day 2
+
+Q: When is a value dropped?
+A: When its owner goes out of scope (at the closing `}`). Exactly once.
+
+Q: Box deallocation principle (fully correct)?
+A: If a variable OWNS a box, Rust frees the box when that variable's frame is removed.
+
+Q: Why is a String moved, not copied?
+A: Its letters are on the heap. Copying only the pointer would give 2 owners, and that means a double free.
+
+Q: Shallow copy vs deep copy?
+A: Shallow copies only the pointer (`let b = a;`). Deep copies the heap data too (`.clone()`).
+
+Q: Why isn't clone automatic?
+A: It can be slow and use a lot of memory, so Rust makes you write it.
+
+Q: What happens to `first` after `add_suffix(first)` and `push_str`?
+A: It points to freed memory (dangling). Rust forbids using it.
+
+Q: "value moved here, in previous iteration of loop"?
+A: I moved a value inside a loop, so the 2nd time around it's gone. Fix: `.clone()` (or borrowing next week).
+
+Q: E0425 "cannot find value"?
+A: The variable is used outside its scope.

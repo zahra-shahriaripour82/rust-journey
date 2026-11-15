@@ -139,6 +139,10 @@
 **What I learned**
 - Variables live on the stack. `Box::new(5)` puts the 5 on the heap,
   and the variable only holds a pointer to it.
+
+
+  The goal of ownership is to prevent undefined behavior, like double free and use after free, at compile time.
+  
 - `let b = a;` with a Box is a **move**: a gives ownership to b.
   Only the pointer is copied, not the heap data. After that, a can't be used.
 - There are 3 ways to move a Box: `let b = a;`, passing it to a function,
@@ -159,3 +163,31 @@ That's a double free (or a use after free). One owner means one free.
 
 **Error to remember**
 E0382 "borrow of moved value": I used a variable after its value moved away.
+
+
+## Week 3 · Day 2: Drop, String/Vec moves, clone
+
+**What I learned**
+- A value is **dropped** (freed) when its owner reaches the end of its scope `}`.
+  Only the owner frees it, exactly once.
+- Pointing to a box is not enough. Only the **owner** frees it.
+  That's why `let b = a;` doesn't cause a double free: only b owns it.
+- `String`, `Vec` and `HashMap` have a box inside (their data is on the heap),
+  so they **move** just like `Box`.
+- After a move, the old variable may point to freed memory
+  (like `first` after `push_str` in the Ferris example). Rust forbids using it,
+  so there's no use after free.
+- `.clone()` is a **deep copy**: it copies the heap data too. `let b = a;` is
+  a **shallow copy** of the pointer, plus a move.
+- Clone costs time and memory, so Rust never does it automatically.
+- Moving a value inside a loop fails the 2nd time, because it's already gone.
+
+**My predictions**
+- Step 3: 5/5 correct! (Yesterday 0/5.)
+
+**Rustlings**
+- move_semantics 1 to 3: ___ (what I fixed: `mut`, `.clone()`, `mut` parameter)
+
+**Errors to remember**
+- E0382: used a value after it moved
+- E0425: cannot find value, because the variable is out of its scope

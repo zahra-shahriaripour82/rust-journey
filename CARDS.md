@@ -224,3 +224,15 @@ A: I moved a value inside a loop, so the 2nd time around it's gone. Fix: `.clone
 
 Q: E0425 "cannot find value"?
 A: The variable is used outside its scope.
+
+
+## Week 3 . Day 3 
+
+Q: Which types are Copy? A: Simple stack-only types: integers, floats, bool, char, and tuples/arrays made only of those.
+Q: Easy test for Copy vs move? A: Does it own heap memory? If yes, it moves. If no, it's usually Copy.
+Q: Why can't String be Copy? A: A bitwise copy would make 2 owners of 1 heap buffer, and that's a double free.
+Q: Is (i32, String) Copy? A: No. One non-Copy part makes the whole tuple move.
+Q: What does impl Drop do? A: It runs your code automatically when the value is freed.
+Q: Drop order at the end of a scope? A: Reverse order of creation (last made, first dropped).
+Q: What happens to the old value when you assign a = new_value? A: The old value is dropped immediately.
+Q: let b = a; then the end of main: how many drops? A: One, only by the owner b.

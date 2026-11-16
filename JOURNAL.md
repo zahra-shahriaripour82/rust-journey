@@ -191,3 +191,32 @@ E0382 "borrow of moved value": I used a variable after its value moved away.
 **Errors to remember**
 - E0382: used a value after it moved
 - E0425: cannot find value, because the variable is out of its scope
+
+
+
+## Week 3 · Day 3: Copy vs move, and Drop
+
+**Copy vs move**
+- Copy types live only on the stack and own nothing on the heap:
+  integers, floats, `bool`, `char`, and tuples/arrays made only of those.
+  Rust copies them automatically, so both variables still work.
+- Types that own heap memory (`String`, `Vec`, `Box`) are NOT Copy. They move.
+- My easy test: "Does it own something on the heap?" Yes means it moves.
+- One non-Copy part makes the whole thing move: `(i32, String)` moves.
+
+**Why String can't be Copy**
+A String is a small card on the stack (address, length, capacity).
+The letters are on the heap. A Copy would copy only the card, so there would be
+2 cards with the same address and 2 owners of 1 heap buffer.
+At the end, both would free it, which is a double free (undefined behavior).
+So Rust gives only 2 options: move (1 owner) or clone (2 separate copies).
+
+**Watching drops with `impl Drop`**
+- `impl Drop` runs my code automatically when a value is freed.
+- A value is dropped at the `}` of its owner's scope, even inside an inner block.
+- At the end of a scope, drops happen in REVERSE order (last made, first dropped).
+- Moved into a function: dropped when THAT function ends.
+- Moved in and returned: not dropped in the function. The new owner drops it later.
+- `let b = a;`: only ONE drop. Ownership prevents a double free, and now I saw it!
+- `a = new_value;`: the old value is dropped immediately, so there's no leak.
+

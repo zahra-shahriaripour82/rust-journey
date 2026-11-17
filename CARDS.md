@@ -225,8 +225,7 @@ A: I moved a value inside a loop, so the 2nd time around it's gone. Fix: `.clone
 Q: E0425 "cannot find value"?
 A: The variable is used outside its scope.
 
-
-## Week 3 . Day 3 
+## Week 3 . Day 3
 
 Q: Which types are Copy? A: Simple stack-only types: integers, floats, bool, char, and tuples/arrays made only of those.
 Q: Easy test for Copy vs move? A: Does it own heap memory? If yes, it moves. If no, it's usually Copy.
@@ -236,3 +235,12 @@ Q: What does impl Drop do? A: It runs your code automatically when the value is 
 Q: Drop order at the end of a scope? A: Reverse order of creation (last made, first dropped).
 Q: What happens to the old value when you assign a = new_value? A: The old value is dropped immediately.
 Q: let b = a; then the end of main: how many drops? A: One, only by the owner b.
+
+## Week 3 . Day 4
+
+Q: Passing a String to a function is like…? A: let parameter = argument;, which is a move. (An i32 is copied.)
+Q: How does a function give ownership back? A: By returning the value. Returning moves it out to the caller.
+Q: How do I return a value and an answer? A: With a tuple: -> (String, usize) and (s, len), then unpack it with let (s, len) = f(s);
+Q: Why isn't a returned value dropped when the function ends? A: Ownership moved out to the caller before the end.
+Q: Why is "give it back" clumsy? A: Bigger return types, unpacking every time, and it's easy to forget. Borrowing (&) fixes it next week.
+Q: What does .chars() do? A: It goes through a String one char at a time.

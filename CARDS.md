@@ -244,3 +244,23 @@ Q: How do I return a value and an answer? A: With a tuple: -> (String, usize) an
 Q: Why isn't a returned value dropped when the function ends? A: Ownership moved out to the caller before the end.
 Q: Why is "give it back" clumsy? A: Bigger return types, unpacking every time, and it's easy to forget. Borrowing (&) fixes it next week.
 Q: What does .chars() do? A: It goes through a String one char at a time.
+
+## Week 3 · Day 5: quiz mistakes
+
+Q: Is having a pointer to freed memory undefined behavior?
+A: No. USING it (reading or freeing it) is UB. Just having it is safe.
+
+Q: "hello" + push_str(" world") prints?
+A: `hello world`, with ONE space (it's inside " world"). Read the strings carefully!
+
+Q: `if false { s2 = s; }` then `println!("{}", s);`: does it compile?
+A: No. Rust assumes any `if` MIGHT run, so `s` MIGHT be moved.
+
+Q: How do I check if a snippet would cause UB?
+A: Ask: is memory freed twice (double free), or read after it's freed (use after free)?
+
+Q: `let b2 = b; println!("{}", b); move_a_box(b2);`: UB?
+A: Not UB (b is read before anything is freed), but Rust still rejects it. Rust is stricter than needed, to stay simple and safe.
+
+Q: When is a box freed after `move_a_box(b)`?
+A: When `move_a_box` ends, because its parameter owned the box.

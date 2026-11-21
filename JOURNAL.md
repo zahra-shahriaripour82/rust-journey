@@ -243,3 +243,45 @@ without owning it, so nothing needs to be given back.
 - `.chars()`: goes through a String one char at a time
 - `"aeiou".contains(c)`: checks if a char is in a string
 - `.to_uppercase()`, `.push('!')`
+
+## Week 4 · Day 1: References and borrowing (part 1)
+
+**What a reference is**
+
+- `&x` creates a reference: a pointer that does NOT own the data.
+  This is called borrowing. It's like lending a book instead of giving it away.
+- `fn count_vowels(text: &String)` only looks at the String. When the
+  function ends, nothing is freed, so there's no need to give it back
+  with tuples like last week.
+
+**Dereferencing (`*`)**
+
+- A Box is like a locker key. `*x` means "open the locker":
+  `*x` reads the value, and `*x += 1` changes it.
+- I rarely write `*` myself. With the dot (`x.abs()`, `s.len()`) and
+  `println!`, Rust adds `*` and `&` automatically.
+
+**The big rule: aliasing XOR mutation**
+
+- Data can be reached by many names (aliasing) OR changed (mutation),
+  but not both at the same time.
+- Why: `let num = &v[2]; v.push(4);`: push may move v's data to a
+  new place and free the old one, so num would point to freed memory
+  (use after free).
+
+**Permissions R / W / O**
+
+- R = read, W = write, O = own (move or drop).
+- `let x` → R O, and `let mut x` → R W O.
+- While `&x` is in use, x loses W and O (it keeps R).
+- A reference lives only until its LAST USE, not until the end of main.
+  After that, the owner gets its permissions back.
+- My 2-step check: (1) find where the borrow starts and its last use,
+  (2) is the data changed between them? If yes → error E0502.
+
+**My predictions**
+
+- 3/4 correct. I got Program 2 wrong: it compiles because `num` was
+  last used BEFORE `push`. Moving one line can fix a borrow error!
+- Note for next time: write the permissions after EACH line, because
+  they change.

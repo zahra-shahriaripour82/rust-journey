@@ -264,3 +264,14 @@ A: Not UB (b is read before anything is freed), but Rust still rejects it. Rust 
 
 Q: When is a box freed after `move_a_box(b)`?
 A: When `move_a_box` ends, because its parameter owned the box.
+
+
+## Week 4 . Day 1 
+Q: What is a reference? A: A pointer that does NOT own the data. Created with &x. When it goes away, nothing is freed.
+Q: Move vs borrow? A: A move gives ownership away. A borrow (&) only lends it, so the owner keeps it.
+Q: What does *r do? A: It follows the pointer to the data (dereference). Rust often adds it for you.
+Q: Aliasing XOR mutation? A: Data can be reached by many names OR changed, but not both at the same time.
+Q: Why is let num = &v[2]; v.push(4); use num unsafe? A: push may move v's data and free the old memory, so num would point to freed memory (use after free).
+Q: What do R, W, O mean? A: Read, Write, Own (move or drop).
+Q: What happens to v when I create &v[2]? A: v loses W and O until the reference's last use. Then it gets them back.
+Q: Error E0502? A: "cannot borrow as mutable because it is also borrowed as immutable": you tried to change something while a reference to it is still in use.

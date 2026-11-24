@@ -265,13 +265,22 @@ A: Not UB (b is read before anything is freed), but Rust still rejects it. Rust 
 Q: When is a box freed after `move_a_box(b)`?
 A: When `move_a_box` ends, because its parameter owned the box.
 
+## Week 4 . Day 1
 
-## Week 4 . Day 1 
 Q: What is a reference? A: A pointer that does NOT own the data. Created with &x. When it goes away, nothing is freed.
 Q: Move vs borrow? A: A move gives ownership away. A borrow (&) only lends it, so the owner keeps it.
-Q: What does *r do? A: It follows the pointer to the data (dereference). Rust often adds it for you.
+Q: What does \*r do? A: It follows the pointer to the data (dereference). Rust often adds it for you.
 Q: Aliasing XOR mutation? A: Data can be reached by many names OR changed, but not both at the same time.
 Q: Why is let num = &v[2]; v.push(4); use num unsafe? A: push may move v's data and free the old memory, so num would point to freed memory (use after free).
 Q: What do R, W, O mean? A: Read, Write, Own (move or drop).
 Q: What happens to v when I create &v[2]? A: v loses W and O until the reference's last use. Then it gets them back.
 Q: Error E0502? A: "cannot borrow as mutable because it is also borrowed as immutable": you tried to change something while a reference to it is still in use.
+
+## Week 4 . Day 2
+
+Q: & vs &mut? A: & = read only, and many can exist at once. &mut = read and change, and only one at a time, with no & alongside.
+Q: While &mut x is in use, what can x do? A: Nothing. x loses R, W and O until the &mut's last use.
+Q: E0499? A: "cannot borrow as mutable more than once at a time": two &mut alive together.
+Q: "Data must outlive its references" means? A: A reference can't live longer than the value it points to. Otherwise it would dangle.
+Q: Can a function return a reference to its own local variable? A: No. The local is dropped when the function ends. Return the value itself (a move).
+Q: Which borrow should a function take? A: The weakest that works: & if it only reads, &mut if it changes, and ownership only if it must keep the value.

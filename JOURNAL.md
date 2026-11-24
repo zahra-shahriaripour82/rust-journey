@@ -285,3 +285,51 @@ without owning it, so nothing needs to be given back.
   last used BEFORE `push`. Moving one line can fix a borrow error!
 - Note for next time: write the permissions after EACH line, because
   they change.
+
+## Week 4 · Day 2: Mutable references + passgen step 1
+
+**`&mut`: borrow to change**
+
+- `fn shout(s: &mut String)` can change the String without owning it.
+- I write `&mut` in both places: the parameter type and the call `shout(&mut text)`.
+- The variable must be `let mut`.
+
+**The rule: many readers OR one writer**
+
+- Many `&` can exist at the same time (read only).
+- Only ONE `&mut` at a time, and no `&` while it's in use.
+- While `&mut x` is in use, x loses R, W and O. Everything comes back
+  after the reference's last use.
+- Errors: E0499 = two `&mut` at once. E0502 = `&` and `&mut` mixed.
+
+**Lifetime = from birth to last use**
+
+- A reference is born where it's created, and dies at its last use.
+- With if/else, each branch can have a different last use, so I check
+  each branch separately.
+
+**Data must outlive its references**
+
+- A reference can never live longer than the data it points to.
+- I can't return `&` to a local variable (it's freed at the end of
+  the function). Fix: return the value itself.
+- "missing lifetime specifier" = Rust doesn't know where a returned
+  reference comes from. Lifetimes (`'a`) come later.
+
+**Passgen step 1** 🔐 (own repo: ~/Documents/Rust_tut/passgen)
+
+- `add_chars(&mut Vec<char>, &str)`: pushes each char into the list
+  (`&mut` because it changes the list).
+- `build_charset(...)`: lowercase always, plus upper/digits/symbols
+  if true → 75 chars.
+- `generate(&Vec<char>, length)`: a loop runs `length` times, and each
+  round picks a random index with `rng.gen_range(0..len)` and pushes
+  one char (`&` because it only reads).
+- `rand::thread_rng()` is a secure "dice machine". It needs `mut`
+  because it changes its state with every roll.
+
+**What I learned from my mistakes**
+
+- I forgot the loop at first, so the password had only 1 character.
+- `push` returns nothing, so there's no need for `let x = ...push()`.
+- Use the weakest borrow that works: `&` to read, `&mut` to change.

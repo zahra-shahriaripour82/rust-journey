@@ -284,3 +284,13 @@ Q: E0499? A: "cannot borrow as mutable more than once at a time": two &mut alive
 Q: "Data must outlive its references" means? A: A reference can't live longer than the value it points to. Otherwise it would dangle.
 Q: Can a function return a reference to its own local variable? A: No. The local is dropped when the function ends. Return the value itself (a move).
 Q: Which borrow should a function take? A: The weakest that works: & if it only reads, &mut if it changes, and ownership only if it must keep the value.
+
+## Week 4 . Day 3
+
+Q: What happens when you push to a full Vec (len == cap)? A: It gets a bigger heap space, copies the items, and frees the old space. The data may MOVE.
+Q: Why is let first = &v[0]; v.push(4); use first forbidden? A: push may move the data and free the old place, so first would point to freed memory (use after free).
+Q: Does push ALWAYS move the data? A: No, only sometimes. Rust can't know, so it forbids the combination always.
+Q: What is an alias? A: A second way to reach the same data (like a reference).
+Q: Aliasing XOR mutation protects against…? A: References pointing to memory that was changed, moved or freed.
+Q: Two fixes for E0502? A: (1) Copy the value instead of borrowing (let first = v[0];). (2) Finish using the reference before the change (move the line).
+Q: len vs capacity? A: len = items now. capacity = items that fit before the Vec must grow.

@@ -333,3 +333,47 @@ without owning it, so nothing needs to be given back.
 - I forgot the loop at first, so the password had only 1 character.
 - `push` returns nothing, so there's no need for `let x = ...push()`.
 - Use the weakest borrow that works: `&` to read, `&mut` to change.
+
+## Week 4 · Day 3: WHY aliasing XOR mutation
+
+**The forbidden program**
+let first = &v[0]; v.push(4); println!("{}", first); → error E0502.
+It looks harmless, but it can be a real use after free.
+
+**What I saw (real addresses)**
+
+- A Vec has pointer, len and cap on the stack.
+- When len == cap and I push, the Vec gets a BIGGER space, copies the
+  items, and FREES the old space.
+- In my output, the address stayed the same at push 4 (it grew in place),
+  but CHANGED at push 7. The data really moved!
+- push only SOMETIMES moves the data. Rust can't know when, so it
+  forbids the combination always.
+
+**Why the rule exists**
+
+- `first` is an alias (a second way to reach v's data).
+- `push` is a mutation, and it may move the data.
+- After the move, v knows the new address, but `first` still points to
+  the OLD, freed place → use after free 💥 (a common security hole in C/C++).
+- So Rust says: while an alias is alive, no mutation. That's aliasing XOR mutation.
+
+**Two fixes for E0502**
+
+1. Copy the value instead of borrowing: `let first = v[0];` (i32 is Copy)
+2. Finish using the reference before the change (move the line up)
+
+**Extra things I learned**
+
+- Vec doubles its capacity (3 → 6 → 12) so it doesn't have to move often.
+  `Vec::with_capacity(n)` reserves space in advance.
+- `is_ascii_uppercase()` = only A–Z. `is_uppercase()` = capitals in any
+  language. For passgen I use the ascii versions.
+
+**Passgen step 2** 🔐
+
+- `count_kinds(&String) -> (usize, usize, usize, usize)` counts lower,
+  upper, digits and symbols. The 4 numbers always add up to the length.
+- It takes `&` because it only reads, so `password` is still usable
+  after the call.
+- This is the first piece of the strength checker.

@@ -81,26 +81,49 @@
 // }
 // not compiled
 
-fn longest_word(s: &String) -> usize {
-    let mut longest = 0;
-    for word in s.split_whitespace() {
-        if word.len() > longest {
-            longest = word.len();
-        }
-    }
-    longest
-}
+// fn longest_word(s: &String) -> usize {
+//     let mut longest = 0;
+//     for word in s.split_whitespace() {
+//         if word.len() > longest {
+//             longest = word.len();
+//         }
+//     }
+//     longest
+// }
 
-fn shout(s: &mut String) {
-    s.make_ascii_uppercase();
-    s.push('!');
-}
+// fn shout(s: &mut String) {
+//     s.make_ascii_uppercase();
+//     s.push('!');
+// }
+
+// fn main() {
+//     let mut text = String::from("rust is wonderful");
+
+//     println!("longest word: {}", longest_word(&text));
+//     shout(&mut text);
+//     println!("after shout: {}", text);
+//     println!("longest word: {}", longest_word(&text));
+// }
 
 fn main() {
-    let mut text = String::from("rust is wonderful");
+    let mut v = vec![1, 2, 3];
+    let neighbor = vec![0; 3]; // another list, placed right after v on the heap
+    println!(
+        "start:   len={} cap={} data at {:p}",
+        v.len(),
+        v.capacity(),
+        v.as_ptr()
+    );
 
-    println!("longest word: {}", longest_word(&text));
-    shout(&mut text);
-    println!("after shout: {}", text);
-    println!("longest word: {}", longest_word(&text));
+    for n in 4..=8 {
+        v.push(n);
+        println!(
+            "push {}: len={} cap={} data at {:p}",
+            n,
+            v.len(),
+            v.capacity(),
+            v.as_ptr()
+        );
+    }
+    println!("{:?}", neighbor);
 }

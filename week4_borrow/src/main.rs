@@ -105,25 +105,69 @@
 //     println!("longest word: {}", longest_word(&text));
 // }
 
-fn main() {
-    let mut v = vec![1, 2, 3];
-    let neighbor = vec![0; 3]; // another list, placed right after v on the heap
-    println!(
-        "start:   len={} cap={} data at {:p}",
-        v.len(),
-        v.capacity(),
-        v.as_ptr()
-    );
+// fn main() {
+//     let mut v = vec![1, 2, 3];
+//     let neighbor = vec![0; 3]; // another list, placed right after v on the heap
+//     println!(
+//         "start:   len={} cap={} data at {:p}",
+//         v.len(),
+//         v.capacity(),
+//         v.as_ptr()
+//     );
 
-    for n in 4..=8 {
-        v.push(n);
-        println!(
-            "push {}: len={} cap={} data at {:p}",
-            n,
-            v.len(),
-            v.capacity(),
-            v.as_ptr()
-        );
-    }
-    println!("{:?}", neighbor);
+//     for n in 4..=8 {
+//         v.push(n);
+//         println!(
+//             "push {}: len={} cap={} data at {:p}",
+//             n,
+//             v.len(),
+//             v.capacity(),
+//             v.as_ptr()
+//         );
+//     }
+//     println!("{:?}", neighbor);
+// }
+
+// fn default_symbols() -> Vec<char> {
+//     let symbols = vec!['!', '@', '#'];
+//     symbols
+// }
+
+// fn main() {
+//     let s = default_symbols();
+//     println!("{:?}", s);
+// }
+
+// fn add_bang(password: &mut String) {
+//     password.push('!');
+// }
+
+// fn main() {
+//     let mut p = String::from("abc123");
+//     add_bang(&mut p);
+//     println!("{}", p);
+// }
+
+// fn main() {
+//     let mut history = vec![String::from("Qx7!"), String::from("m9@Z")];
+//     let last = &history[history.len() - 1];
+//     println!("last before push: {}", last); // ← moved up: last use of `last`
+//     history.push(String::from("Tt5#")); // ✅ the borrow is already over
+// }
+
+// fn main() {
+//     let history = vec![String::from("Qx7!"), String::from("m9@Z")];
+//     let first: &String = &history[0];
+//     println!("first: {}", first);
+//     println!("all: {:?}", history);
+// }
+
+fn show(password: &String) {
+    println!("Your password: {}", password);
+}
+
+fn main() {
+    let password = String::from("Qx7!m9@Z");
+    show(&password);
+    println!("Length: {}", password.len());
 }

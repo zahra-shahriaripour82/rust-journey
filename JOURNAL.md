@@ -377,3 +377,45 @@ It looks harmless, but it can be a real use after free.
 - It takes `&` because it only reads, so `password` is still usable
   after the call.
 - This is the first piece of the strength checker.
+
+## Week 4 · Day 4: Fixing ownership errors
+
+**My 3-question method**
+
+1. What does the error say? (borrow starts → change/move → later use)
+2. What would go wrong in memory? (double free, use after free, dangling reference)
+3. What do I actually want? → then pick the fix.
+
+**The standard fixes**
+
+- Return the owned value (`String`, `Vec`) instead of `&` to a local.
+- Use `&mut` when I need to change through a reference.
+- Reorder: finish reading before changing.
+- Borrow (`&`) instead of moving, when I only need to look.
+- `.clone()` when I really need my own copy (it's fine for small data,
+  but it shouldn't be a lazy fix).
+
+**My 5 fixes**
+
+1. `default_symbols() -> &Vec<char>`: failed because the local Vec dies
+   at the end (dangling). Fixed by returning `Vec<char>`. (E0106)
+2. `add_bang(&String)`: failed because `&` is read only. Fixed by
+   `&mut String` + `&mut p`. (E0596)
+3. password history: failed because `last` points into the Vec and push
+   may move the data. Fixed by reordering (print first) OR `.clone()`. (E0502)
+4. `let first: String = history[0];`: failed because taking it out would
+   leave 2 owners (double free). Fixed by `&history[0]`. (E0507)
+5. `show(password: String)`: failed because show took ownership and freed
+   it. Fixed by `show(&String)`, since it only reads. (E0382)
+
+**4 ways to return a string from a function**
+
+- Return `String` (move it out): the most common.
+- Return `&'static str` for fixed text, which lives forever.
+- `Rc<String>` for shared ownership (Week 15).
+- The caller passes `&mut String` and the function fills it.
+- The real questions: how long should it live? Who should free it?
+
+**Good to know**
+Sometimes Rust rejects programs that are actually safe (like borrowing two
+different array elements). Rust is careful, and there are special tools for that.

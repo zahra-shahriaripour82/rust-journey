@@ -294,3 +294,12 @@ Q: What is an alias? A: A second way to reach the same data (like a reference).
 Q: Aliasing XOR mutation protects against…? A: References pointing to memory that was changed, moved or freed.
 Q: Two fixes for E0502? A: (1) Copy the value instead of borrowing (let first = v[0];). (2) Finish using the reference before the change (move the line).
 Q: len vs capacity? A: len = items now. capacity = items that fit before the Vec must grow.
+
+## Week 4 - Day 4
+
+Q: My 3 questions for an ownership error? A: (1) What does the error say? (2) What would go wrong in memory? (3) What do I actually want? Then pick the fix.
+Q: E0596? A: "cannot borrow as mutable, behind a & reference": you're trying to change through a read-only reference. Use &mut.
+Q: E0507? A: "cannot move out of index": you can't take a non-Copy item out of a Vec by index. Borrow it (&v[0]) or clone it.
+Q: Fix for returning & to a local? A: Return the owned value instead.
+Q: When is .clone() OK? A: When you really need a separate copy, and the data is small or the copy is needed for a long time.
+Q: Safe program, but Rust rejects it? A: It happens. Rust is careful and sometimes stricter than needed (for example, borrowing two different array elements). There are special tools for those cases (later).

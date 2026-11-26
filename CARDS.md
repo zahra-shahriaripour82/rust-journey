@@ -311,3 +311,22 @@ Q: What does an into\_ function name usually mean? A: It takes ownership and tur
 Q: Why return Option<i32> from into_largest? A: An empty list has no largest number, so the result is None.
 Q: Why does add_to_history take String, not &String? A: The history must keep the password after the loop round ends. A reference would dangle.
 Q: move_semantics4 fix? A: Reorder so the first &mut is finished before the second one is created.
+
+## Week 4 - Day 6
+
+Q: Why does for i in 0..v.len() with v.remove(i) crash? A: The range is calculated once at the start, but the list gets shorter, so the index goes out of bounds.
+Q: Why can removing items skip one? A: After remove(i), the next item slides into position i. If I still do i += 1, I skip it.
+Q: New list vs in place? A: New list (&Vec → Vec) keeps the original. In place (&mut Vec) changes it and saves memory.
+Q: The two borrowing rules? A: (1) Many & OR one &mut. (2) References must not outlive their data.
+Q: Three fixes for E0502? A: Reorder, copy/clone, restructure (e.g. keep an index instead of a reference).
+Q: The two borrowing rules?
+A: (1) Many & OR one &mut, never both at once. (2) A reference must not outlive its data.
+
+Q: &v[0] + v.push(): which bug would happen?
+A: Use after free (the reference READS freed memory). Not double free (that's freeing twice).
+
+Q: How does Rust prevent dangling references?
+A: The compiler checks that data outlives all its references, at compile time.
+
+Q: Three fixes for E0502?
+A: Reorder, copy/clone, restructure (e.g. keep an index instead of a reference).

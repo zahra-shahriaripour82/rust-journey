@@ -303,3 +303,11 @@ Q: E0507? A: "cannot move out of index": you can't take a non-Copy item out of a
 Q: Fix for returning & to a local? A: Return the owned value instead.
 Q: When is .clone() OK? A: When you really need a separate copy, and the data is small or the copy is needed for a long time.
 Q: Safe program, but Rust rejects it? A: It happens. Rust is careful and sometimes stricter than needed (for example, borrowing two different array elements). There are special tools for those cases (later).
+
+## Week 4 - Day 5
+
+Q: Rule of thumb for parameters? A: Start with &. Use &mut if it must change. Take ownership only if it must keep or use up the value.
+Q: What does an into\_ function name usually mean? A: It takes ownership and turns the value into something else. Your value is gone afterwards.
+Q: Why return Option<i32> from into_largest? A: An empty list has no largest number, so the result is None.
+Q: Why does add_to_history take String, not &String? A: The history must keep the password after the loop round ends. A reference would dangle.
+Q: move_semantics4 fix? A: Reorder so the first &mut is finished before the second one is created.

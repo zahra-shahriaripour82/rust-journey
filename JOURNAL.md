@@ -419,3 +419,45 @@ It looks harmless, but it can be a real use after free.
 **Good to know**
 Sometimes Rust rejects programs that are actually safe (like borrowing two
 different array elements). Rust is careful, and there are special tools for that.
+
+## Week 4 · Day 5: Choosing &, &mut, or ownership
+
+**My rule of thumb**
+
+- Start with `&` (read only).
+- Use `&mut` if the function must change the caller's value.
+- Take ownership (no `&`) only if the function must KEEP the value or use it up.
+- A function named `into_...` usually takes ownership, so my value is gone after.
+
+**My 3 functions**
+
+- `sum(v: &Vec<i32>)`: WHY: it only reads the numbers.
+- `double_all(v: &mut Vec<i32>)`: WHY: it changes the numbers in place.
+- `into_largest(v: Vec<i32>) -> Option<i32>`: WHY: it takes the list
+  (I'm done with it). It returns `Some(largest)`, or `None` for an empty list.
+
+**My mistakes (and what I learned)**
+
+- It's `v.len()` (a method with `()`), not `v.length`.
+- A loop over positions needs a range: `for i in 0..v.len()`.
+- `i` is the position and `v[i]` is the number. Add `v[i]`, not `i`.
+- I need my own variable (`let mut total = 0;`). `sum` is the function's name.
+- Lines that change something (`v[i] *= 2`, `x += 1`, `push`) don't need `let`.
+
+**Rustlings move_semantics 1–5**
+
+- #2 without clone: `fill_vec(&Vec<i32>)` borrows and builds a NEW Vec.
+  Two different lists always need a copy somewhere. The only question is
+  who makes it (the caller with `.clone()`, or the function).
+- #4: reorder, so the first `&mut` is finished before the second one is created.
+- #5: `mut data: String` in a parameter is OK: once the String is moved in,
+  the function is the new owner and can decide to change it.
+  `mut` belongs to the variable, not the value.
+
+**Passgen step 3** 🔐
+
+- `add_to_history(&mut Vec<String>, String)`: &mut because it adds to the
+  history, and ownership because the history must keep the password.
+- `print_history(&Vec<String>)`: only reads.
+- The history lives only in memory (never save passwords as plain text!).
+  Later, in the web UI, it can become a "recently generated" list.

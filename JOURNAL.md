@@ -461,3 +461,45 @@ different array elements). Rust is careful, and there are special tools for that
 - `print_history(&Vec<String>)`: only reads.
 - The history lives only in memory (never save passwords as plain text!).
   Later, in the web UI, it can become a "recently generated" list.
+
+## Week 4 · Day 6: Practical test + knowledge check
+
+**The practical: removing zeros in 2 ways**
+
+- `without_zeros(&Vec<i32>) -> Vec<i32>`: builds a NEW list and keeps the
+  original. Use it when the caller still needs the old list ("before/after").
+- `remove_zeros_in_place(&mut Vec<i32>)`: changes the list itself. Use it
+  when the old version isn't needed anymore (it saves memory).
+
+**The trap in remove_zeros_in_place**
+
+- `v.remove(i)` makes the rest of the list slide LEFT, and the list gets shorter.
+- `for i in 0..v.len()` calculates the length once at the start, so later
+  the index goes out of bounds → panic "index out of bounds".
+- `i += 1` after every round skips the item that slid into position i
+  (with `0, 0` side by side, one zero stays).
+- Fix: a `while i < v.len()` loop, and only `i += 1` when I KEEP the item.
+- Analogy: people in a line. If #2 leaves, the next person steps into #2,
+  so I check #2 again.
+- It was hard, and I used the answer to understand it. That's OK.
+
+**Knowledge check: 1 ✅, 3 🟡**
+
+- Rules: (1) many & OR one &mut, never both at once.
+  (2) A reference must not outlive its data.
+- &v[0] + push → USE AFTER FREE (the reference reads freed memory),
+  not double free.
+- Dangling reference: points to freed memory. Rust checks at compile time
+  that data outlives all its references.
+- Fixes for E0502: reorder, copy/clone, restructure (e.g. keep an index).
+  Adding `mut` does NOT fix it.
+
+**Coming soon**
+
+- `&[i32]` (a slice) is more flexible than `&Vec<i32>` → Week 5.
+- `v.retain(|&x| x != 0)` does the same thing in one line (a closure,
+  like a TS arrow function) → Week 14.
+
+**Week 4 in one sentence**
+Borrowing lets me lend a value (& to read, &mut to change) without giving
+it away, and Rust makes sure no reference ever points to freed memory.
